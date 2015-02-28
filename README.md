@@ -26,26 +26,13 @@ relevant experts in a social collaboration network.
 
 ## Installation
 
-### Add in your composer.json
-
-```js
-{
-    "require": {
-        "endroid/prediction-io-bundle": "dev-master"
-    }
-}
-```
-
-### Install the bundle
+Use [Composer](https://getcomposer.org/) to install the bundle.
 
 ``` bash
-$ curl -s http://getcomposer.org/installer | php
-$ php composer.phar update endroid/prediction-io-bundle
+$ composer require endroid/prediction-io-bundle
 ```
 
-Composer will install the bundle to your project's `vendor/endroid` directory.
-
-### Enable the bundle via the kernel
+Then enable the bundle via the kernel.
 
 ``` php
 <?php
