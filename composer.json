@@ -17,9 +17,10 @@
         "endroid/prediction-io": "~1.0"
     },
     "autoload": {
-        "psr-0": { "Endroid\\Bundle\\PredictionIOBundle": "" }
+        "psr-4": {
+          "Endroid\\Bundle\\PredictionIOBundle\\": ""
+        }
     },
-    "target-dir": "Endroid/Bundle/PredictionIOBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.x-dev"
