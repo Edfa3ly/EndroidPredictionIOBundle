@@ -3,9 +3,10 @@ Endroid PredictionIO Bundle
 
 *By [endroid](http://endroid.nl/)*
 
-[![Build Status](https://secure.travis-ci.org/endroid/EndroidPredictionIOBundle.png)](http://travis-ci.org/endroid/EndroidPredictionIOBundle)
-[![Latest Stable Version](https://poser.pugx.org/endroid/prediction-io-bundle/v/stable.png)](https://packagist.org/packages/endroid/prediction-io-bundle)
-[![Total Downloads](https://poser.pugx.org/endroid/prediction-io-bundle/downloads.png)](https://packagist.org/packages/endroid/prediction-io-bundle)
+[![Build Status](http://img.shields.io/travis/endroid/EndroidPredictionIOBundle.svg)](http://travis-ci.org/endroid/EndroidPredictionIOBundle)
+[![Latest Stable Version](http://img.shields.io/packagist/v/endroid/prediction-io-bundle.svg)](https://packagist.org/packages/endroid/prediction-io-bundle)
+[![Total Downloads](http://img.shields.io/packagist/dt/endroid/prediction-io-bundle.svg)](https://packagist.org/packages/endroid/prediction-io-bundle)
+[![License](http://img.shields.io/packagist/l/endroid/prediction-io-bundle.svg)](https://packagist.org/packages/endroid/prediction-io-bundle)
 
 This bundle provides easy integration with [`PredictionIO`](http://prediction.io/). PredictionIO is an open source machine
 learning server for software developers to create predictive features, such as personalization, recommendation and content
