@@ -55,33 +55,37 @@ public function registerBundles()
 ```yaml
 endroid_prediction_io:
     app_key: "Your app key"
-    api_url: "http://localhost:8000" // optional
+    event_server_url: "http://localhost:7070"
+    engine_url: "http://localhost:8000"
 ```
 
 ## Usage
 
-After installation and configuration, the service can be directly referenced from within your controllers.
+After installation and configuration, the client can be directly referenced from within your controllers.
 
 ```php
 <?php
-public function recommendAction()
-{
-    $client = $this->get('endroid.prediction_io');
 
-    // populate
-    $client->createUser($userId);
-    $client->createItem($itemId);
-    $client->recordAction($userId, $itemId, 'view');
+use Endroid\PredictionIO\Client;
 
-    // get recommendations and similar items
-    $recommendations = $client->getRecommendations($userId, $engine, $count);
-    $similarItems = $client->getSimilarItems($itemId, $engine, $count);
-}
+/** @var Client $client */
+$client = $this->get('endroid.prediction_io.client');
+
+// Populate with users and items
+$client->createUser($userId);
+$client->createItem($itemId);
+
+// Record actions
+$client->recordAction($userId, $itemId, 'view');
+
+// Return recommendations
+$recommendations = $client->getRecommendations($userId, $itemCount);
+
 ```
 
 ## Vagrant box
 
-PredictionIO provides a [`Vagrant box`](http://docs.prediction.io/current/installation/install-predictionio-with-virtualbox-vagrant.html)
+PredictionIO provides a [`Vagrant box`](https://docs.prediction.io/install/install-vagrant/)
 containing an out-of-the-box PredictionIO server.
 
 ## Versioning

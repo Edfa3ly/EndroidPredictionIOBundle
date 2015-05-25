@@ -22,7 +22,8 @@ class EndroidPredictionIOExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('endroid.prediction_io.app_key', $config['app_key']);
-        $container->setParameter('endroid.prediction_io.api_url', $config['api_url']);
+        $container->setParameter('endroid.prediction_io.event_server_url', $config['event_server_url']);
+        $container->setParameter('endroid.prediction_io.engine_url', $config['engine_url']);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
