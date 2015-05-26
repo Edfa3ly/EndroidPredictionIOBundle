@@ -79,7 +79,8 @@ $client->createItem($itemId);
 $client->recordAction($userId, $itemId, 'view');
 
 // Return recommendations
-$recommendations = $client->getRecommendations($userId, $itemCount);
+$recommendedItems = $client->getRecommendedItems($userId, $itemCount);
+$similarItems = $client->getSimilarItems($itemId, $itemCount);
 
 ```
 
