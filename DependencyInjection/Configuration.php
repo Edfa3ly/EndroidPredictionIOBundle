@@ -12,6 +12,11 @@ namespace Endroid\Bundle\PredictionIOBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
+/**
+ * Class Configuration
+ *
+ * @package Endroid\Bundle\PredictionIOBundle\DependencyInjection
+ */
 class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
@@ -21,9 +26,52 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('app_key')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('event_server_url')->defaultValue(null)->end()
-                ->scalarNode('engine_url')->defaultValue(null)->end()
+                ->arrayNode('eventServer')
+                    ->children()
+                        ->scalarNode('url')
+                            ->defaultValue('http://localhost:7070')
+                            ->isRequired()
+                        ->end()
+                        ->scalarNode('timeout')
+                            ->defaultValue(0)
+                        ->end()
+                        ->scalarNode('connectTimeout')
+                            ->defaultValue(5)
+                        ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('apps')
+                    ->isRequired()
+                    ->requiresAtLeastOneElement()
+                    ->useAttributeAsKey('app')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('key')
+                                ->isRequired()
+                                ->cannotBeEmpty()
+                            ->end()
+                            ->arrayNode('engines')
+                                ->isRequired()
+                                ->requiresAtLeastOneElement()
+                                ->useAttributeAsKey('engine')
+                                    ->prototype('array')
+                                        ->children()
+                                            ->scalarNode('url')
+                                                ->defaultValue('http://localhost:8000')
+                                            ->end()
+                                            ->scalarNode('timeout')
+                                                ->defaultValue(0)
+                                            ->end()
+                                            ->scalarNode('connectTimeout')
+                                                ->defaultValue(5)
+                                            ->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

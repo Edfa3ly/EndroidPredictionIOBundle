@@ -9,23 +9,48 @@
 
 namespace Endroid\Bundle\PredictionIOBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Config\FileLocator;
 
+/**
+ * Class EndroidPredictionIOExtension
+ *
+ * @package Endroid\Bundle\PredictionIOBundle\DependencyInjection
+ */
 class EndroidPredictionIOExtension extends Extension
 {
+    /**
+     * @param array            $configs
+     * @param ContainerBuilder $container
+     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
+        $config        = $this->processConfiguration($configuration, $configs);
+        $eventServer   = $config['eventServer'];
+        foreach ($config['apps'] as $app => $appConfig) {
+            $eventClient = new Definition('Endroid\PredictionIO\EventClient');
+            $eventClient
+                ->addArgument($appConfig['key'])
+                ->addArgument($eventServer['url'])
+                ->addArgument($eventServer['timeout'])
+                ->addArgument($eventServer['connectTimeout']);
+            $eventClient->setLazy(true);
+            $container->setDefinition(sprintf('endroid.prediction_io.%s.event_client', $app), $eventClient);
+            foreach ($appConfig['engines'] as $engine => $engineConfig) {
 
-        $container->setParameter('endroid.prediction_io.app_key', $config['app_key']);
-        $container->setParameter('endroid.prediction_io.event_server_url', $config['event_server_url']);
-        $container->setParameter('endroid.prediction_io.engine_url', $config['engine_url']);
-
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+                $engineClient = new Definition('Endroid\PredictionIO\EngineClient');
+                $engineClient
+                    ->addArgument($engineConfig['url'])
+                    ->addArgument($engineConfig['timeout'])
+                    ->addArgument($engineConfig['connectTimeout']);
+                $engineClient->setLazy(true);
+                $container->setDefinition(sprintf('endroid.prediction_io.%s.%s.engine_client', $app, $engine),
+                    $engineClient
+                );
+            }
+        }
     }
 }
