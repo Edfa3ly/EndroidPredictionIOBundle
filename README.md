@@ -54,9 +54,31 @@ public function registerBundles()
 
 ```yaml
 endroid_prediction_io:
-    app_key: "Your app key"
-    event_server_url: "http://localhost:7070"
-    engine_url: "http://localhost:8000"
+    eventServer:
+        url: %prediction_io.eventServer.url%
+    apps:
+        yashry:
+            key: %prediction_io.yashry.key%
+            engines:
+                complementarypurchase:
+                    url: http://localhost:8000
+                productranking:
+                    url: http://localhost:8001
+                viewedthenbought:
+                    url: http://localhost:8002
+                recommendation:
+                    url: http://localhost:8003
+                similarproduct:
+                    url: http://localhost:8004
+                leadscoring:
+                    url: http://localhost:8005
+        edfa3ly:
+            key: %prediction_io.edfa3ly.key%
+            engines:
+                complementarypurchase:
+                    url: http://localhost:8006
+                leadscoring:
+                    url: http://localhost:8007
 ```
 
 ## Usage
@@ -66,22 +88,26 @@ After installation and configuration, the client can be directly referenced from
 ```php
 <?php
 
-use Endroid\PredictionIO\Client;
+use Endroid\PredictionIO\EventClient;
+use Endroid\PredictionIO\EngineClient;
 
-/** @var Client $client */
-$client = $this->get('endroid.prediction_io.client');
+/** @var EventClient $yashryEventClient */
+$yashryEventClient = $this->get('endroid.prediction_io.yashry.event_client');
+/** @var EngineClient $yashryRecommendationEngineClient */
+$yashryRecommendationEngineClient = $this->get('endroid.prediction_io.yashry.recommendation.engine_client');
+/** @var EngineClient $yashrySimilarProductEngineClient */
+$yashrySimilarProductEngineClient = $this->get('endroid.prediction_io.yashry.similarproduct.engine_client');
 
 // Populate with users and items
-$client->createUser($userId);
-$client->createItem($itemId);
+$yashryEventClient->createUser($userId);
+$yashryEventClient->createItem($itemId);
 
 // Record actions
-$client->recordAction($userId, $itemId, 'view');
+$client->recordUserActionOnItem('view', $userId, $itemId);
 
 // Return recommendations
-$recommendedItems = $client->getRecommendedItems($userId, $itemCount);
-$similarItems = $client->getSimilarItems($itemId, $itemCount);
-
+$recommendedItems = $yashryRecommendationEngineClient->getRecommendedItems($userId, $itemCount);
+$similarItems = $yashrySimilarProductEngineClient->getSimilarItems($itemId, $itemCount);
 ```
 
 ## Vagrant box
